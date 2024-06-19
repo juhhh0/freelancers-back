@@ -63,12 +63,18 @@ const removeUser = async (id: string) => {
     return await getAllUsers()
 }
 
-const updateUser = async (id: string, data: any) => {
-    const user = await prisma.user.update({
-        where: { id },
-        data
+const getAllFreelancers = async () => {
+    const freelancers = await prisma.user.findMany({
+        where: { role: 'freelancer' }
     })
-    return user
+    return freelancers
+}
+
+const getAllRecruiters = async () => {
+    const recruiters = await prisma.user.findMany({
+        where: { role: 'recruiter' }
+    })
+    return recruiters
 }
 
 const getAllUsers = async () => {
@@ -83,5 +89,13 @@ const getUserById = async (id: string) => {
     return user
 }
 
+const updateUser = async (id: string, data: any) => {
+    const user = await prisma.user.update({
+        where: { id },
+        data
+    })
+    return user
+}
 
-export { getAllUsers, getUserById, addUser, removeUser, login }
+
+export { getAllUsers, getUserById, addUser, removeUser, login, getAllFreelancers, getAllRecruiters, updateUser }

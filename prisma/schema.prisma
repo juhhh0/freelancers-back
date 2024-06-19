@@ -13,45 +13,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Freelancer {
-  id          String   @id @default(cuid())
-  name        String
-  skills      String[]
-  reviews     Review[]
-  picture     String @default("https://i.pravatar.cc/150?img=68")
-  title       String @default("Freelancer")
-  available   Boolean @default(true)
-}
-
-model Recruiter {
-  id          String   @id @default(cuid())
-  name        String
-  picture     String @default("https://i.pravatar.cc/150?img=68")
-  reviews     Review[]
-
-}
-
 model Review {
-  id          String   @id @default(cuid())
-  rating      Int
-  comment     String
-  freelancer  Freelancer @relation(fields: [freelancerId], references: [id])
+  id           String @id @default(cuid())
+  rating       Int
+  comment      String
+  freelancer   User   @relation(name: "FreelancerReviews", fields: [freelancerId], references: [id])
   freelancerId String
-  recruiter   Recruiter @relation(fields: [recruiterId], references: [id])
-  recruiterId String
-  userId      String @default("anonymous")
-  user        User @relation(fields: [userId], references: [id])
+  recruiter    User   @relation(name: "RecruiterReviews", fields: [recruiterId], references: [id])
+  recruiterId  String
 }
 
 model User {
-  id          String   @id @default(cuid())
-  email       String   @unique
-  password    String
-  role        String
-  reviews     Review[]
-  name        String
-  picture     String @default("https://i.pravatar.cc/150?img=68")
-  available   Boolean @default(true)
-  title       String @default("Freelancer")
-  skills      String[]  
+  id                String   @id @default(cuid())
+  email             String   @unique
+  password          String
+  role              String
+  FreelancerReviews Review[] @relation(name: "FreelancerReviews")
+  RecruiterReviews  Review[] @relation(name: "RecruiterReviews")
+  name              String
+  picture           String   @default("https://i.pravatar.cc/150?img=68")
+  available         Boolean  @default(true)
+  title             String   @default("Freelancer")
+  skills            String[]
 }

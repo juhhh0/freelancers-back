@@ -45,7 +45,12 @@ const getReviewByFreelancerId = async (freelancerId: string) => {
 
 const getReviewByUserId = async (userId: string) => {
     const reviews = await prisma.review.findMany({
-        where: { userId }
+        where: { 
+            OR: [
+                { recruiterId: userId },
+                { freelancerId: userId }
+            ]
+        } 
     })
     return reviews
 }

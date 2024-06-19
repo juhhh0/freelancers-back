@@ -12,53 +12,28 @@ export const typeDefs = `#graphql
         available: Boolean
         token: String
     }
-    type Freelancer {
-        id: ID!
-        name: String!
-        title: String!
-        skills: [String!]!
-        picture: String
-        reviews: [Review!]
-        available: Boolean!
-    }
     type Review {
         id: ID!
         rating: Int!
         comment: String!
-        freelancer: Freelancer!
-        recruiter: Recruiter!
-        user: User!
-    }
-    type Recruiter {
-        id: ID!
-        name: String!
-        picture: String
-        reviews: [Review!]
+        freelancer: User!
+        recruiter: User!
     }
     type Query {
-        users: [User]
+        freelancers: [User]
+        recruiters: [User]
         user(id: ID!): User
-        freelancers: [Freelancer]
-        freelancer(id: ID!): Freelancer
         reviews: [Review]
         review(id: ID!): Review
-        recruiters: [Recruiter]
-        recruiter(id: ID!): Recruiter
     }
     type Mutation {
         login(email: String!, password: String!): User
         addUser(user: AddUserInput!): User
         deleteUser(id: ID!): [User]
-        addFreelancer(freelancer: AddFreelancerInput!): Freelancer
         addReview(review: AddReviewInput!): Review
-        addRecruiter(recruiter: AddRecruiterInput!): Recruiter
-        deleteFreelancer(id: ID!): [Freelancer]
+        updateUser(id: ID!, user: UpdateUserInput!): User
         deleteReview(id: ID!): [Review]
-        deleteRecruiter(id: ID!): [Recruiter]
-        updateFreelancer(id: ID!, freelancer: UpdateFreelancerInput!): Freelancer
-        updateRecruiter(id: ID!, recruiter: UpdateRecruiterInput!): Recruiter
         updateReview(id: ID!, review: UpdateReviewInput!): Review
-        
     }
     input AddUserInput {
         name: String!
@@ -68,33 +43,18 @@ export const typeDefs = `#graphql
         role: String!
         title: String
     }
-    input AddFreelancerInput {
-        name: String!
-        skills: [String!]!
-        picture: String
-        title: String!
-        available: Boolean!
-    }
     input AddReviewInput {
         rating: Int!
         comment: String!
         freelancerId: ID!
         recruiterId: ID!
     }
-    input AddRecruiterInput {
-        name: String!
-        picture: String
-    }
-    input UpdateFreelancerInput {
+    input UpdateUserInput {
         name: String
         skills: [String!]
         picture: String
         title: String
         available: Boolean
-    }
-    input UpdateRecruiterInput {
-        name: String
-        picture: String
     }
     input UpdateReviewInput {
         comment: String
