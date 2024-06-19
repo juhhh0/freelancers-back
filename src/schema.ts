@@ -1,4 +1,16 @@
 export const typeDefs = `#graphql
+    type User {
+        id: ID!
+        name: String!
+        email: String!
+        password: String!
+        picture: String
+        reviews: [Review!]
+        role: String!
+        title: String
+        skills: [String!]
+        available: Boolean
+    }
     type Freelancer {
         id: ID!
         name: String!
@@ -14,6 +26,7 @@ export const typeDefs = `#graphql
         comment: String!
         freelancer: Freelancer!
         recruiter: Recruiter!
+        user: User!
     }
     type Recruiter {
         id: ID!
@@ -22,6 +35,8 @@ export const typeDefs = `#graphql
         reviews: [Review!]
     }
     type Query {
+        users: [User]
+        user(id: ID!): User
         freelancers: [Freelancer]
         freelancer(id: ID!): Freelancer
         reviews: [Review]
@@ -30,6 +45,7 @@ export const typeDefs = `#graphql
         recruiter(id: ID!): Recruiter
     }
     type Mutation {
+        addUser(user: AddUserInput!): User
         addFreelancer(freelancer: AddFreelancerInput!): Freelancer
         addReview(review: AddReviewInput!): Review
         addRecruiter(recruiter: AddRecruiterInput!): Recruiter
@@ -40,6 +56,14 @@ export const typeDefs = `#graphql
         updateRecruiter(id: ID!, recruiter: UpdateRecruiterInput!): Recruiter
         updateReview(id: ID!, review: UpdateReviewInput!): Review
         
+    }
+    input AddUserInput {
+        name: String!
+        email: String!
+        password: String!
+        picture: String
+        role: String!
+        title: String
     }
     input AddFreelancerInput {
         name: String!

@@ -3,12 +3,15 @@ import { startStandaloneServer } from "@apollo/server/standalone";
 import { typeDefs } from "./schema.js";
 
 import { addFreelancer, getAllFreelancers, getFreelancerById, removeFreelancer, updateFreelancer } from "./db/freelancers.js";
-import { addReview, getAllReviews, getReviewByFreelancerId, getReviewById, removeReview, updateReview } from "./db/reviews.js";
+import { addReview, getAllReviews, getReviewByFreelancerId, getReviewById, getReviewByUserId, removeReview, updateReview } from "./db/reviews.js";
 import { addRecruiter, getAllRecruiters, getRecruiterById, removeRecruiter, updateRecruiter } from "./db/recruiters.js";
+import { addUser, getAllUsers, getUserById } from "./db/users.js";
 
 
 const resolvers = {
     Query : {
+        users: () => getAllUsers(),
+        user: (parent, args) => getUserById(args.id),
         freelancers: () => getAllFreelancers(),
         freelancer: (parent, args) => getFreelancerById(args.id),
         reviews: () => getAllReviews(),
@@ -16,12 +19,16 @@ const resolvers = {
         recruiters: () => getAllRecruiters(),
         recruiter: (parent, args) => getRecruiterById(args.id)
     },
+    User: {
+        reviews: (parent) => getReviewByUserId(parent.id)
+    },
     Freelancer: {
         reviews: (parent) => getReviewByFreelancerId(parent.id)
     },
     Review: {
         freelancer: (parent) => getFreelancerById(parent.freelancerId),
-        recruiter: (parent) => getRecruiterById(parent.recruiterId)
+        recruiter: (parent) => getRecruiterById(parent.recruiterId),
+        user: (parent) => getUserById(parent.userId)
     },
     Recruiter: {
         reviews: (parent) => getReviewByFreelancerId(parent.id)
@@ -38,6 +45,10 @@ const resolvers = {
         deleteRecruiter: (parent, args) => {
             const recruiters = removeRecruiter(args.id)
             return recruiters
+        },
+        addUser: (parent, args) => {
+            const newUser = addUser(args.user)
+            return newUser
         },
         addFreelancer: (parent, args) => {
             const newFreelancer = addFreelancer(args.freelancer)

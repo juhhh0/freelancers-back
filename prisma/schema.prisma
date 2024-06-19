@@ -39,4 +39,19 @@ model Review {
   freelancerId String
   recruiter   Recruiter @relation(fields: [recruiterId], references: [id])
   recruiterId String
+  userId      String @default("anonymous")
+  user        User @relation(fields: [userId], references: [id])
+}
+
+model User {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  password    String
+  role        String
+  reviews     Review[]
+  name        String
+  picture     String @default("https://i.pravatar.cc/150?img=68")
+  available   Boolean @default(true)
+  title       String @default("Freelancer")
+  skills      String[]  
 }

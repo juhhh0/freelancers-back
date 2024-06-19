@@ -43,6 +43,13 @@ const getReviewByFreelancerId = async (freelancerId: string) => {
     return reviews
 }
 
+const getReviewByUserId = async (userId: string) => {
+    const reviews = await prisma.review.findMany({
+        where: { userId }
+    })
+    return reviews
+}
+
 const getReviewsByRecruiterId = async (recruiterId: string) => {
     const reviews = await prisma.review.findMany({
         where: { recruiterId }
@@ -51,4 +58,4 @@ const getReviewsByRecruiterId = async (recruiterId: string) => {
 
 }
 
-export { getAllReviews, getReviewById, addReview, removeReview, updateReview, getReviewByFreelancerId, getReviewsByRecruiterId}
+export { getAllReviews, getReviewById, addReview, removeReview, updateReview, getReviewByFreelancerId, getReviewsByRecruiterId, getReviewByUserId }
