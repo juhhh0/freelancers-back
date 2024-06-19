@@ -5,7 +5,7 @@ import { typeDefs } from "./schema.js";
 import { addFreelancer, getAllFreelancers, getFreelancerById, removeFreelancer, updateFreelancer } from "./db/freelancers.js";
 import { addReview, getAllReviews, getReviewByFreelancerId, getReviewById, getReviewByUserId, removeReview, updateReview } from "./db/reviews.js";
 import { addRecruiter, getAllRecruiters, getRecruiterById, removeRecruiter, updateRecruiter } from "./db/recruiters.js";
-import { addUser, getAllUsers, getUserById } from "./db/users.js";
+import { addUser, getAllUsers, getUserById, login, removeUser } from "./db/users.js";
 
 
 const resolvers = {
@@ -34,6 +34,11 @@ const resolvers = {
         reviews: (parent) => getReviewByFreelancerId(parent.id)
     },
     Mutation: {
+        login: (parent, args) => login(args.email, args.password),
+        deleteUser: (parent, args) => {
+            const users = removeUser(args.id)
+            return users
+        },
         deleteFreelancer: (parent, args) => {
             const freelancers = removeFreelancer(args.id)
             return freelancers
@@ -81,6 +86,18 @@ const server = new ApolloServer({
     typeDefs,
     resolvers
 });
+
+const context = async ({req, res}) => {
+    const token = req.headers.authorization || '';
+
+    // const user = await getUserByToken(token);
+
+    // if (!user) {
+    //     throw new Error('Not authenticated');
+    // }
+
+    // return { user };
+}
 
 const { url } = await startStandaloneServer(server, {
     listen: { port: 4000 }

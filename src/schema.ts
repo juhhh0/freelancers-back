@@ -10,6 +10,7 @@ export const typeDefs = `#graphql
         title: String
         skills: [String!]
         available: Boolean
+        token: String
     }
     type Freelancer {
         id: ID!
@@ -45,7 +46,9 @@ export const typeDefs = `#graphql
         recruiter(id: ID!): Recruiter
     }
     type Mutation {
+        login(email: String!, password: String!): User
         addUser(user: AddUserInput!): User
+        deleteUser(id: ID!): [User]
         addFreelancer(freelancer: AddFreelancerInput!): Freelancer
         addReview(review: AddReviewInput!): Review
         addRecruiter(recruiter: AddRecruiterInput!): Recruiter
