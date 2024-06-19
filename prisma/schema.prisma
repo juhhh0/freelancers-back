@@ -1,0 +1,42 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Freelancer {
+  id          String   @id @default(cuid())
+  name        String
+  skills      String[]
+  reviews     Review[]
+  picture     String @default("https://i.pravatar.cc/150?img=68")
+  title       String @default("Freelancer")
+  available   Boolean @default(true)
+}
+
+model Recruiter {
+  id          String   @id @default(cuid())
+  name        String
+  picture     String @default("https://i.pravatar.cc/150?img=68")
+  reviews     Review[]
+
+}
+
+model Review {
+  id          String   @id @default(cuid())
+  rating      Int
+  comment     String
+  freelancer  Freelancer @relation(fields: [freelancerId], references: [id])
+  freelancerId String
+  recruiter   Recruiter @relation(fields: [recruiterId], references: [id])
+  recruiterId String
+}
